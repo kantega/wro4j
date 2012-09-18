@@ -3,8 +3,7 @@
  */
 package ro.isdc.wro.http;
 
-import ro.isdc.wro.config.factory.PropertyWroConfigurationFactory;
-import ro.isdc.wro.config.jmx.ConfigConstants;
+import ro.isdc.wro.config.factory.PropertiesAndFilterConfigWroConfigurationFactory;
 import ro.isdc.wro.config.jmx.WroConfiguration;
 import ro.isdc.wro.manager.factory.ConfigurableWroManagerFactory;
 import ro.isdc.wro.manager.factory.WroManagerFactory;
@@ -54,36 +53,7 @@ public class ConfigurableWroFilter
      */
     @Override
     protected ObjectFactory<WroConfiguration> newWroConfigurationFactory(final FilterConfig filterConfig) {
-        if (properties == null) {
-            properties = new Properties();
-            properties.put(ConfigConstants.debug.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.debug.name()), Boolean.toString(true)));
-            properties.put(ConfigConstants.gzipResources.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.gzipResources.name()), Boolean.toString(true)));
-            properties.put(ConfigConstants.jmxEnabled.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.jmxEnabled.name()), Boolean.toString(true)));
-            properties.put(ConfigConstants.cacheUpdatePeriod.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.cacheUpdatePeriod.name()), Integer.toString(0)));
-            properties.put(ConfigConstants.modelUpdatePeriod.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.modelUpdatePeriod.name()), Integer.toString(0)));
-            properties.put(ConfigConstants.disableCache.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.disableCache.name()), Boolean.toString(false)));
-            properties.put(ConfigConstants.ignoreMissingResources.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.ignoreMissingResources.name()), Boolean.toString(true)));
-            properties.put(ConfigConstants.ignoreEmptyGroup.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.ignoreEmptyGroup.name()), Boolean.toString(true)));
-            properties.put(ConfigConstants.ignoreFailingProcessor.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.ignoreFailingProcessor.name()), Boolean.toString(false)));
-            properties.put(ConfigConstants.encoding.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.encoding.name()), WroConfiguration.DEFAULT_ENCODING));
-            String managerFactory = filterConfig.getInitParameter(ConfigConstants.managerFactoryClassName.name());
-            if (managerFactory != null) {
-                properties.put(ConfigConstants.managerFactoryClassName.name(), managerFactory);
-            }
-            String mbean = filterConfig.getInitParameter(ConfigConstants.mbeanName.name());
-            if (mbean != null) {
-                properties.put(ConfigConstants.mbeanName.name(), mbean);
-            }
-            String header = filterConfig.getInitParameter(ConfigConstants.header.name());
-            if (header != null) {
-                properties.put(ConfigConstants.header.name(), header);
-            }
-            properties.put(ConfigConstants.cacheGzippedContent.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.cacheGzippedContent.name()), Boolean.toString(false)));
-            properties.put(ConfigConstants.parallelPreprocessing.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.parallelPreprocessing.name()), Boolean.toString(false)));
-            properties.put(ConfigConstants.connectionTimeout.name(), defaultValueIfNull(filterConfig.getInitParameter(ConfigConstants.connectionTimeout.name()),
-                    Integer.toString(WroConfiguration.DEFAULT_CONNECTION_TIMEOUT)));
-        }
-        return new PropertyWroConfigurationFactory(properties);
+        return new PropertiesAndFilterConfigWroConfigurationFactory(filterConfig);
     }
 
     private String defaultValueIfNull(String value, String defaultValue){
